@@ -129,6 +129,8 @@ You can access the ui components of the dialog (if you are using built-in dialog
 4. ```getProgressDescriptionView()``` The TextView that is describing (by text) the progress of the total work.
 5. ```getTasksCancellationButton()``` The Button for requesting cancellation of the remaining tasks.
 
+<br />
+
 Please see the image below if you are not sure about the ui components:
 <br />
 <br />
