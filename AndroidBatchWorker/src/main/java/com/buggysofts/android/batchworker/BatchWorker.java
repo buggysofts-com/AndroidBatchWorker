@@ -31,7 +31,7 @@ public class BatchWorker<T, V> {
     private AlertDialog classicDialog;
     private BottomSheetDialog bottomSheetDialog;
     private TextView dialogTitleView;
-    private TextView currentLabelView;
+    private TextView subjectDescriptionView;
     private ProgressBar progressBar;
     private TextView progressDescriptionView;
     private TextView tasksCancellationButton;
@@ -90,7 +90,7 @@ public class BatchWorker<T, V> {
 
                         // init refs
                         BatchWorker.this.dialogTitleView = activeDialog.findViewById(dialogMode.getDialogTitleResId());
-                        currentLabelView = activeDialog.findViewById(dialogMode.getLabelResId());
+                        subjectDescriptionView = activeDialog.findViewById(dialogMode.getLabelResId());
                         progressBar = activeDialog.findViewById(dialogMode.getProgressBarResId());
                         progressDescriptionView = activeDialog.findViewById(dialogMode.getProgressDescResId());
 
@@ -103,7 +103,7 @@ public class BatchWorker<T, V> {
                         }
                         progressBar.setIndeterminate(true);
                         progressDescriptionView.setText(R.string.three_dots_);
-                        currentLabelView.setText(workerCallBack.longPreWorkDescriptor());
+                        subjectDescriptionView.setText(workerCallBack.longPreWorkDescriptor());
                     }
                 }
             );
@@ -119,7 +119,7 @@ public class BatchWorker<T, V> {
 
                         // init refs
                         BatchWorker.this.dialogTitleView = activeDialog.findViewById(dialogMode.getDialogTitleResId());
-                        currentLabelView = activeDialog.findViewById(dialogMode.getLabelResId());
+                        subjectDescriptionView = activeDialog.findViewById(dialogMode.getLabelResId());
                         progressBar = activeDialog.findViewById(dialogMode.getProgressBarResId());
                         progressDescriptionView = activeDialog.findViewById(dialogMode.getProgressDescResId());
                         tasksCancellationButton = activeDialog.findViewById(dialogMode.getCancelBtnResId());
@@ -132,7 +132,7 @@ public class BatchWorker<T, V> {
                             BatchWorker.this.dialogTitleView.setVisibility(View.GONE);
                         }
                         progressDescriptionView.setText(R.string.three_dots_);
-                        currentLabelView.setText(workerCallBack.longPreWorkDescriptor());
+                        subjectDescriptionView.setText(workerCallBack.longPreWorkDescriptor());
                         progressBar.setIndeterminate(true);
 
                         // init listeners
@@ -180,14 +180,14 @@ public class BatchWorker<T, V> {
         // init refs
         View parent = uiComponentsSelector.getParentView();
         this.dialogTitleView = parent.findViewById(uiComponentsSelector.getTitleResId());
-        currentLabelView = parent.findViewById(uiComponentsSelector.getLabelResId());
+        subjectDescriptionView = parent.findViewById(uiComponentsSelector.getLabelResId());
         progressBar = parent.findViewById(uiComponentsSelector.getProgressBarResId());
         progressDescriptionView = parent.findViewById(uiComponentsSelector.getProgressDescResId());
         tasksCancellationButton = parent.findViewById(uiComponentsSelector.getCancelBtnResId());
 
         // init properties
         progressDescriptionView.setText(R.string.three_dots_);
-        currentLabelView.setText(workerCallBack.longPreWorkDescriptor());
+        subjectDescriptionView.setText(workerCallBack.longPreWorkDescriptor());
         progressBar.setIndeterminate(true);
 
         // init listeners
@@ -297,7 +297,7 @@ public class BatchWorker<T, V> {
                                 @Override
                                 public void run() {
                                     // update label & progress descriptor to specified value
-                                    currentLabelView.setText(
+                                    subjectDescriptionView.setText(
                                         workerCallBack.taskLabelDescriptor(
                                             dataItems,
                                             finalI
@@ -354,7 +354,7 @@ public class BatchWorker<T, V> {
                                 public void run() {
                                     progressBar.setIndeterminate(true);
                                     progressDescriptionView.setText(R.string.three_dots_);
-                                    currentLabelView.setText(workerCallBack.longPostWorkDescriptor());
+                                    subjectDescriptionView.setText(workerCallBack.longPostWorkDescriptor());
                                 }
                             }
                         );
@@ -396,8 +396,8 @@ public class BatchWorker<T, V> {
         return dialogTitleView;
     }
 
-    public TextView getCurrentLabelView() {
-        return currentLabelView;
+    public TextView getSubjectDescriptionView() {
+        return subjectDescriptionView;
     }
 
     public ProgressBar getProgressBar() {

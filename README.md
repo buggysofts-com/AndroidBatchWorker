@@ -1,5 +1,5 @@
-# AndroidZip [![](https://jitpack.io/v/buggysofts-com/AndroidZip.svg)](https://jitpack.io/#buggysofts-com/AndroidZip)
-A zip explorer library for android that uses <b>DocumentFile</b> object as its source. It uses my **StreamZip** library as its base. Its functionalities are similar to the standard java **ZipFile** class.
+# AndroidBatchWorker [![](https://jitpack.io/v/buggysofts-com/AndroidBatchWorker.svg)](https://jitpack.io/#buggysofts-com/AndroidBatchWorker)
+Execute asynchronous batch tasks with predefined or custom UI in Android.
 
 <br />
 
@@ -33,8 +33,7 @@ Finally, add these two dependencies to your app/module level build.gradle file
 
 dependencies {
     ...
-    implementation 'com.github.buggysofts-com:StreamZip:v1.0.0'
-    implementation 'com.github.buggysofts-com:AndroidZip:v1.0.0'
+    implementation 'com.github.buggysofts-com:AndroidBatchWorker:v1.0.0'
 }
 ```
 And you are done importing the library.
@@ -43,60 +42,96 @@ And you are done importing the library.
 
 ## Sample codes
 
-To create an instance  do something like...
+Here is a sample that uses Integer as input data type, and Double as the output data type.
+You can use any data type as input or output.
 
 ```
-AndroidZip zip = null;
-try {
-    zip = new AndroidZip(MainActivity.this, documentFile);
-} catch (Exception e) {
-    e.printStackTrace();
-} finally {
-    if(zip != null){
-        List<ZipEntry> entries = zip.entries();
-        for (int i = 0; i < entries.size(); i++) {
-            // do something
+new BatchWorker<Integer, Double>(
+    MainActivity.this,
+    "Title",
+    Arrays.asList(1, 2, 3, 4, 5),
+    DialogMode.MODE_BOTTOM_SHEET,
+    new WorkerCallBack<Integer, Double>() {
+        @UiThread
+        @Override
+        public void onShortPreWork() {
+            // todo - perform any instantaneous task - eg. update/initialize ui
+        }
+    
+        @WorkerThread
+        @Override
+        public void onLongPreWork(List<Integer> dataList) {
+            // todo - perform any long running task on the data
+            // eg. initialize one or more property of each data item.
+        }
+    
+        @Override
+        public String longPreWorkDescriptor() {
+            // todo - return anything you like, eg. "initializing", "connecting" etc.
+            return "Pre-Processing...";
+        }
+    
+        @Override
+        public Double performTask(List<Integer> dataList, int activeDataIndex) {
+            Integer activeData = dataList.get(activeDataIndex);
+    
+            // todo - perform actual task(may be long running) on each data item
+            double lResult = getLongRunningProcessResult(activeData);
+    
+            // return a result
+            return activeData*lResult;
+        }
+    
+        @Override
+        public String taskLabelDescriptor(List<Integer> dataList, int activeDataIndex) {
+            // todo - return any short details about the operation on the active data
+            // e.g. it's name or any other details etc.
+            return String.format("%s", dataList.get(activeDataIndex));
+        }
+    
+        @Override
+        public String taskProgressDescriptor(List<Integer> dataList, int activeDataIndex) {
+            // todo - return a text representation of the progress, for example...
+            return String.format(
+                "%s/%s",
+                activeDataIndex+1,
+                dataList.size()
+            );
+        }
+    
+        @Override
+        public void onLongPostWork(List<Double> results) {
+            // todo - perform any long running task on the result list
+            // eg. finalize works, free used resources, anything.
+        }
+    
+        @Override
+        public String longPostWorkDescriptor() {
+            // todo - return anything you like, eg. "Finalizing", "Clearing temporary resources" etc.
+            return "Post-Processing...";
+        }
+    
+        @Override
+        public void onShortPostWork(boolean completed) {
+            // todo - perform any instantaneous task - eg. update/finalize ui
         }
     }
-}
+).start();
 ```
 
 <br />
 
-Then you can use different methods that are similar to the standard java ZipFile class. For example here are the
-publicly available methods.
+You can access the ui components of the dialog (if you are using built-in dialogs) using the following public getter methods.
 
-- ```size()``` Returns the total number of available entries.
-- ```getComment()``` Returns the principal comment of the zip file.
-- ```entries()``` Returns all the available entries as a list of <b>ZipEntry</b>.
-- ```getInputStream(...)``` Opens(and returns) a bounded input stream currently positioning at the start of the
-  requested entry's data block.
-- ```close()``` Closes the zip file, and any subsequent call to <b>getInputStream(...)</b> will throw an exception.
-  However, other methods of the class that are saved in memory will still be available after call to <b>close()</b>.
+1. ```getDialogTitleView()``` The TextView acting as the title of the dialog.
+2. ```getSubjectDescriptionView()``` The TextView acting as the current subject descriptor. Current subject is the data item for which the task is currently running.
+3. ```getProgressBar()``` The ProgressBar that is visualising the progress of the total work.
+4. ```getProgressDescriptionView()``` The TextView that is describing (by text) the progress of the total work.
+5. ```getTasksCancellationButton()``` The Button for requesting cancellation of the remaining tasks.
 
-**Please Note**
-
-- The **ZipEntry** we mentioned above is a part of this library and has similar methods as the standard **ZipEntry**
-  class
-  in java jdk.
-- If you do not have a **ZipEntry** instance, and only have the name of the entry, you can use the minimal
-  constructor (
-  i.e.  ```ZipEntry(String name)```) to obtain an input stream. Of course, you would get an exception if the entry does
-  not
-  exist.
-
+Please see the image below if you are not sure about the ui components:
 <br />
-
-### Performance
-
-The performance is similar to the Standard **ZipFile** class. Before this, the only way to read a zip file in this kind
-of situation was to use the **ZipInputStream** class which basically reads every byte in its way to get to the next
-entry. That is, to list, or to get data of all the entries of a zip file, it is equivalent of reading the whole file.
-Imagine you have to read some metadata within some big zip files, may be 100 zip files, think how much time it would
-take!
-Of course, you can use some caching technique, which I was doing for a long time, in fact there is still a library in
-the git repo, which does exactly that. But in any way, that is not enough, it takes a lot of memory, and the performance
-is limited to many constraints.
+![UI components](/app/src/main/res/drawable/dlg_components.png.png)
 
 <br />
 
