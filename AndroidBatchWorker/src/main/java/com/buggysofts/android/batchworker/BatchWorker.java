@@ -105,7 +105,7 @@ public class BatchWorker<T, V> {
 
                                     // perform post
                                     // do the specified short postWork
-                                    workerCallBack.onShortPostWork(!cancelOperations);
+                                    workerCallBack.onShortPostWork(false);
                                 }
                             }
                         );
