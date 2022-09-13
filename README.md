@@ -125,8 +125,8 @@ You can access the ui components of the dialog (if you are using built-in dialog
 
 1. ```getDialogTitleView()``` The TextView acting as the title of the dialog.
 2. ```getSubjectDescriptionView()``` The TextView acting as the current subject descriptor. Current subject is the data item for which the task is currently running.
-3. ```getProgressBar()``` The ProgressBar that is visualising the progress of the total work.
-4. ```getProgressDescriptionView()``` The TextView that is describing (by text) the progress of the total work.
+3. ```getProgressDescriptionView()``` The TextView that is describing (by text) the progress of the total work.
+4. ```getProgressBar()``` The ProgressBar that is visualising the progress of the total work.
 5. ```getTasksCancellationButton()``` The Button for requesting cancellation of the remaining tasks.
 
 <br />
