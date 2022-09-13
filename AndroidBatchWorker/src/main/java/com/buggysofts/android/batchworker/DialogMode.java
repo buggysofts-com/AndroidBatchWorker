@@ -7,7 +7,7 @@ public enum DialogMode {
         R.id.current_label,
         R.id.progress_bar_batch_progress,
         R.id.current_progress_desc,
-        -1
+        R.id.btn_cancel_tasks
     ),
     MODE_BOTTOM_SHEET(
         R.layout.dialog_layout_bottom_sheet,

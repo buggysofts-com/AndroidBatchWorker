@@ -1,12 +1,10 @@
 package com.buggysofts.android.batchworkerimpl;
 
+import android.os.Bundle;
+
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.text.Html;
-import android.widget.Toast;
 
 import com.buggysofts.android.batchworker.BatchWorker;
 import com.buggysofts.android.batchworker.DialogMode;
@@ -37,11 +35,6 @@ public class MainActivity extends AppCompatActivity {
                 @WorkerThread
                 @Override
                 public void onLongPreWork(List<Integer> dataList) {
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     // todo - perform any long running task on the data
                     // eg. initialize one or more property of each data item.
                 }
@@ -60,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                     double lResult = getLongRunningProcessResult(activeData);
 
                     // return a result
-                    return activeData*lResult;
+                    return activeData * lResult;
                 }
 
                 @Override
@@ -75,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     // todo - return a text representation of the progress, for example...
                     return String.format(
                         "%s/%s",
-                        activeDataIndex+1,
+                        activeDataIndex + 1,
                         dataList.size()
                     );
                 }
@@ -101,6 +94,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private double getLongRunningProcessResult(Integer activeData) {
-        return 1.5;
+        return activeData * 1.5;
     }
 }

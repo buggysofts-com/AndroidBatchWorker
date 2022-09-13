@@ -24,8 +24,11 @@ public class BatchWorker<T, V> {
     // constructor passed components
     private final Context context;
     private final List<T> dataItems;
-    private final DialogMode dialogMode;
     private final WorkerCallBack<T, V> workerCallBack;
+
+    // ui mode helpers
+    private DialogMode dialogMode;
+    private UiComponentsSelector uiComponentsSelector;
 
     // dialog refs
     private AlertDialog classicDialog;
@@ -98,7 +101,7 @@ public class BatchWorker<T, V> {
                                     cancelOperations = true;
 
                                     // dismiss dialog on operation cancellation
-                                    bottomSheetDialog.dismiss();
+                                    classicDialog.dismiss();
 
                                     // perform post
                                     // do the specified short postWork
@@ -150,7 +153,7 @@ public class BatchWorker<T, V> {
 
                                     // perform post
                                     // do the specified short postWork
-                                    workerCallBack.onShortPostWork(!cancelOperations);
+                                    workerCallBack.onShortPostWork(false);
                                 }
                             }
                         );
@@ -164,19 +167,17 @@ public class BatchWorker<T, V> {
      * Construct a batch worker that will execute the defined task on all the items of the input data list with a built-in dialog window.
      *
      * @param context              the context in which the window will appear.
-     * @param dialogTitleView      optional title of the dialog.
      * @param dataItems            the actual data items that the we will work upon.
      * @param uiComponentsSelector container to hold external view resource ids required for publishing progress info of the tasks.
      * @param workerCallBack       callback interface for defining the task for each data item, and more.
      */
     public BatchWorker(@NonNull @UiContext Context context,
-                       @Nullable CharSequence dialogTitleView,
                        @NonNull List<T> dataItems,
                        @NonNull UiComponentsSelector uiComponentsSelector,
                        @NonNull WorkerCallBack<T, V> workerCallBack) {
         this.context = context;
         this.dataItems = dataItems;
-        this.dialogMode = null;
+        this.uiComponentsSelector = uiComponentsSelector;
         this.workerCallBack = workerCallBack;
 
         // init refs
@@ -201,11 +202,11 @@ public class BatchWorker<T, V> {
                     cancelOperations = true;
 
                     // dismiss dialog on operation cancellation
-                    bottomSheetDialog.dismiss();
+                    // nothing to dismiss
 
                     // perform post
                     // do the specified short postWork
-                    workerCallBack.onShortPostWork(!cancelOperations);
+                    workerCallBack.onShortPostWork(false);
                 }
             }
         );
@@ -260,10 +261,14 @@ public class BatchWorker<T, V> {
                                 workerCallBack.onShortPreWork();
 
                                 // show dialog
-                                if (dialogMode == DialogMode.MODE_CLASSIC) {
-                                    classicDialog.show();
+                                if (uiComponentsSelector == null) {
+                                    if (dialogMode == DialogMode.MODE_CLASSIC) {
+                                        classicDialog.show();
+                                    } else {
+                                        bottomSheetDialog.show();
+                                    }
                                 } else {
-                                    bottomSheetDialog.show();
+                                    // external ui
                                 }
                             }
                         }
@@ -375,10 +380,14 @@ public class BatchWorker<T, V> {
                                 @Override
                                 public void run() {
                                     // show dialog
-                                    if (dialogMode == DialogMode.MODE_CLASSIC) {
-                                        classicDialog.dismiss();
+                                    if (uiComponentsSelector == null) {
+                                        if (dialogMode == DialogMode.MODE_CLASSIC) {
+                                            classicDialog.dismiss();
+                                        } else {
+                                            bottomSheetDialog.dismiss();
+                                        }
                                     } else {
-                                        bottomSheetDialog.dismiss();
+                                        // external ui
                                     }
 
                                     // perform post
