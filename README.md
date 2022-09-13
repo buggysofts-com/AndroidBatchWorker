@@ -131,6 +131,7 @@ You can access the ui components of the dialog (if you are using built-in dialog
 
 Please see the image below if you are not sure about the ui components:
 <br />
+<br />
 ![UI components](/app/src/main/res/drawable/dlg_components.png)
 
 <br />
