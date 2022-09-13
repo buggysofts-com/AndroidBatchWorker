@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AndroidBatchWorker</string>
+    <string name="cancel">Cancel</string>
+    <string name="three_dots_">...</string>
+</resources>
