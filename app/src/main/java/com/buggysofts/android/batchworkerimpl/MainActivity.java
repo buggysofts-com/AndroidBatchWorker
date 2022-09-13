@@ -37,11 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 @WorkerThread
                 @Override
                 public void onLongPreWork(List<Integer> dataList) {
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     // todo - perform any long running task on the data
                     // eg. initialize one or more property of each data item.
                 }
@@ -67,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 public String taskLabelDescriptor(List<Integer> dataList, int activeDataIndex) {
                     // todo - return any short details about the operation on the active data
                     // e.g. it's name or any other details etc.
-                    return String.format("%s", "test_"+dataList.get(activeDataIndex)+".txt");
+                    return String.format("%s", dataList.get(activeDataIndex));
                 }
 
                 @Override
@@ -101,11 +96,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private double getLongRunningProcessResult(Integer activeData) {
-        try {
-            Thread.sleep(activeData*1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         return 1.5;
     }
 }
