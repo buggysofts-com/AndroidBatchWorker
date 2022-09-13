@@ -137,6 +137,7 @@ Please see the image below if you are not sure about the ui components:
 ![UI components](/app/src/main/res/drawable/dlg_components.png)
 
 <br />
+<br />
 
 Please share & rate the library if you find it useful.
 
