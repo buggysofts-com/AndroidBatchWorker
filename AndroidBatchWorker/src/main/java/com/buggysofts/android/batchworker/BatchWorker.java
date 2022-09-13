@@ -62,23 +62,6 @@ public class BatchWorker<T, V> {
             classicDialog =
                 new AlertDialog.Builder(context)
                     .setView(dialogMode.getDialogLayoutResId())
-                    .setPositiveButton(
-                        R.string.cancel,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // mark cancellation
-                                cancelOperations = true;
-
-                                // dismiss dialog on operation cancellation
-                                // already dismissed
-
-                                // perform post
-                                // do the specified short postWork
-                                workerCallBack.onShortPostWork(false);
-                            }
-                        }
-                    )
                     .setCancelable(false)
                     .create();
 
@@ -93,6 +76,7 @@ public class BatchWorker<T, V> {
                         subjectDescriptionView = activeDialog.findViewById(dialogMode.getLabelResId());
                         progressBar = activeDialog.findViewById(dialogMode.getProgressBarResId());
                         progressDescriptionView = activeDialog.findViewById(dialogMode.getProgressDescResId());
+                        tasksCancellationButton = activeDialog.findViewById(dialogMode.getCancelBtnResId());
 
                         // init properties
                         if (dialogTitleView != null) {
@@ -104,6 +88,24 @@ public class BatchWorker<T, V> {
                         progressBar.setIndeterminate(true);
                         progressDescriptionView.setText(R.string.three_dots_);
                         subjectDescriptionView.setText(workerCallBack.longPreWorkDescriptor());
+
+                        // init listeners
+                        tasksCancellationButton.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // mark cancellation
+                                    cancelOperations = true;
+
+                                    // dismiss dialog on operation cancellation
+                                    bottomSheetDialog.dismiss();
+
+                                    // perform post
+                                    // do the specified short postWork
+                                    workerCallBack.onShortPostWork(!cancelOperations);
+                                }
+                            }
+                        );
                     }
                 }
             );
@@ -131,9 +133,9 @@ public class BatchWorker<T, V> {
                         } else {
                             BatchWorker.this.dialogTitleView.setVisibility(View.GONE);
                         }
+                        progressBar.setIndeterminate(true);
                         progressDescriptionView.setText(R.string.three_dots_);
                         subjectDescriptionView.setText(workerCallBack.longPreWorkDescriptor());
-                        progressBar.setIndeterminate(true);
 
                         // init listeners
                         tasksCancellationButton.setOnClickListener(
@@ -186,9 +188,9 @@ public class BatchWorker<T, V> {
         tasksCancellationButton = parent.findViewById(uiComponentsSelector.getCancelBtnResId());
 
         // init properties
+        progressBar.setIndeterminate(true);
         progressDescriptionView.setText(R.string.three_dots_);
         subjectDescriptionView.setText(workerCallBack.longPreWorkDescriptor());
-        progressBar.setIndeterminate(true);
 
         // init listeners
         tasksCancellationButton.setOnClickListener(

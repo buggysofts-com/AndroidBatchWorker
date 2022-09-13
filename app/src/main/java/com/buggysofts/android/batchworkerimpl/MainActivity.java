@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this,
             "Title",
             Arrays.asList(1, 2, 3, 4, 5),
-            DialogMode.MODE_BOTTOM_SHEET,
+            DialogMode.MODE_CLASSIC,
             new WorkerCallBack<Integer, Double>() {
                 @UiThread
                 @Override
@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
                 @WorkerThread
                 @Override
                 public void onLongPreWork(List<Integer> dataList) {
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     // todo - perform any long running task on the data
                     // eg. initialize one or more property of each data item.
                 }
