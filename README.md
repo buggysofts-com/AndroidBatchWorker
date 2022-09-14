@@ -100,7 +100,7 @@ new BatchWorker<Integer, Double>(
             );
         }
     
-                @WorkerThread
+        @WorkerThread
         @Override
         public void onLongPostWork(List<Double> results) {
             // todo - perform any long running task on the result list
@@ -113,7 +113,7 @@ new BatchWorker<Integer, Double>(
             return "Post-Processing...";
         }
     
-                @UiThread
+        @UiThread
         @Override
         public void onShortPostWork(boolean completed) {
             // todo - perform any instantaneous task - eg. update/finalize ui
