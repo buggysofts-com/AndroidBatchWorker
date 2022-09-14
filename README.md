@@ -33,7 +33,7 @@ Finally, add these two dependencies to your app/module level build.gradle file
 
 dependencies {
     ...
-    implementation 'com.github.buggysofts-com:AndroidBatchWorker:v1.0.1'
+    implementation 'com.github.buggysofts-com:AndroidBatchWorker:v1.0.2'
 }
 ```
 And you are done importing the library.
@@ -60,7 +60,7 @@ new BatchWorker<Integer, Double>(
     
         @WorkerThread
         @Override
-        public void onLongPreWork(List<Integer> dataList) {
+        public void onLongPreWork(@NonNull List<Integer> dataList) {
             // todo - perform any long running task on the data
             // eg. initialize one or more property of each data item.
         }
@@ -73,7 +73,7 @@ new BatchWorker<Integer, Double>(
     
         @WorkerThread
         @Override
-        public Double performTask(List<Integer> dataList, int activeDataIndex) {
+        public Double performTask(@NonNull List<Integer> dataList, int activeDataIndex) {
             Integer activeData = dataList.get(activeDataIndex);
     
             // todo - perform actual task(may be long running) on each data item
@@ -84,14 +84,14 @@ new BatchWorker<Integer, Double>(
         }
     
         @Override
-        public String taskLabelDescriptor(List<Integer> dataList, int activeDataIndex) {
+        public String taskLabelDescriptor(@NonNull List<Integer> dataList, int activeDataIndex) {
             // todo - return any short details about the operation on the active data
             // e.g. it's name or any other details etc.
             return String.format("%s", dataList.get(activeDataIndex));
         }
     
         @Override
-        public String taskProgressDescriptor(List<Integer> dataList, int activeDataIndex) {
+        public String taskProgressDescriptor(@NonNull List<Integer> dataList, int activeDataIndex) {
             // todo - return a text representation of the progress, for example...
             return String.format(
                 "%s/%s",
@@ -102,7 +102,7 @@ new BatchWorker<Integer, Double>(
     
         @WorkerThread
         @Override
-        public void onLongPostWork(List<Double> results) {
+        public void onLongPostWork(@NonNull List<Double> results) {
             // todo - perform any long running task on the result list
             // eg. finalize works, free used resources, anything.
         }
@@ -115,7 +115,7 @@ new BatchWorker<Integer, Double>(
     
         @UiThread
         @Override
-        public void onShortPostWork(boolean completed) {
+        public void onShortPostWork(@NonNull List<Double> results, boolean completed) {
             // todo - perform any instantaneous task - eg. update/finalize ui
         }
     }
