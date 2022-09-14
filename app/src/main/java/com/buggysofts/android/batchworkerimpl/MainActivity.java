@@ -3,6 +3,7 @@ package com.buggysofts.android.batchworkerimpl;
 import android.os.Bundle;
 
 import androidx.annotation.MainThread;
+import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @WorkerThread
                 @Override
-                public void onLongPreWork(List<Integer> dataList) {
+                public void onLongPreWork(@NonNull List<Integer> dataList) {
                     // todo - perform any long running task on the data
                     // eg. initialize one or more property of each data item.
                 }
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @WorkerThread
                 @Override
-                public Double performTask(List<Integer> dataList, int activeDataIndex) {
+                public Double performTask(@NonNull List<Integer> dataList, int activeDataIndex) {
                     Integer activeData = dataList.get(activeDataIndex);
 
                     // todo - perform actual task(may be long running) on each data item
@@ -59,14 +60,14 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public String taskLabelDescriptor(List<Integer> dataList, int activeDataIndex) {
+                public String taskLabelDescriptor(@NonNull List<Integer> dataList, int activeDataIndex) {
                     // todo - return any short details about the operation on the active data
                     // e.g. it's name or any other details etc.
                     return String.format("%s", dataList.get(activeDataIndex));
                 }
 
                 @Override
-                public String taskProgressDescriptor(List<Integer> dataList, int activeDataIndex) {
+                public String taskProgressDescriptor(@NonNull List<Integer> dataList, int activeDataIndex) {
                     // todo - return a text representation of the progress, for example...
                     return String.format(
                         "%s/%s",
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @WorkerThread
                 @Override
-                public void onLongPostWork(List<Double> results) {
+                public void onLongPostWork(@NonNull List<Double> results) {
                     // todo - perform any long running task on the result list
                     // eg. finalize works, free used resources, anything.
                 }
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
                 @UiThread
                 @Override
-                public void onShortPostWork(boolean completed) {
+                public void onShortPostWork(@NonNull List<Double> results, boolean completed) {
                     // todo - perform any instantaneous task - eg. update/finalize ui
                 }
             }

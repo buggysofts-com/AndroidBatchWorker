@@ -105,7 +105,10 @@ public class BatchWorker<T, V> {
 
                                     // perform post
                                     // do the specified short postWork
-                                    workerCallBack.onShortPostWork(false);
+                                    workerCallBack.onShortPostWork(
+                                        new ArrayList<>(0),
+                                        false
+                                    );
                                 }
                             }
                         );
@@ -153,7 +156,10 @@ public class BatchWorker<T, V> {
 
                                     // perform post
                                     // do the specified short postWork
-                                    workerCallBack.onShortPostWork(false);
+                                    workerCallBack.onShortPostWork(
+                                        new ArrayList<>(0),
+                                        false
+                                    );
                                 }
                             }
                         );
@@ -206,7 +212,10 @@ public class BatchWorker<T, V> {
 
                     // perform post
                     // do the specified short postWork
-                    workerCallBack.onShortPostWork(false);
+                    workerCallBack.onShortPostWork(
+                        new ArrayList<>(0),
+                        false
+                    );
                 }
             }
         );
@@ -392,7 +401,10 @@ public class BatchWorker<T, V> {
 
                                     // perform post
                                     // do the specified short postWork
-                                    workerCallBack.onShortPostWork(!cancelOperations);
+                                    workerCallBack.onShortPostWork(
+                                        results,
+                                        !cancelOperations
+                                    );
                                 }
                             }
                         );
