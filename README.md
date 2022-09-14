@@ -33,7 +33,7 @@ Finally, add these two dependencies to your app/module level build.gradle file
 
 dependencies {
     ...
-    implementation 'com.github.buggysofts-com:AndroidBatchWorker:v1.0.0'
+    implementation 'com.github.buggysofts-com:AndroidBatchWorker:v1.0.1'
 }
 ```
 And you are done importing the library.
@@ -50,7 +50,7 @@ new BatchWorker<Integer, Double>(
     MainActivity.this,
     "Title",
     Arrays.asList(1, 2, 3, 4, 5),
-    DialogMode.MODE_BOTTOM_SHEET,
+    DialogMode.MODE_CLASSIC,
     new WorkerCallBack<Integer, Double>() {
         @UiThread
         @Override
@@ -71,6 +71,7 @@ new BatchWorker<Integer, Double>(
             return "Pre-Processing...";
         }
     
+        @WorkerThread
         @Override
         public Double performTask(List<Integer> dataList, int activeDataIndex) {
             Integer activeData = dataList.get(activeDataIndex);
@@ -99,6 +100,7 @@ new BatchWorker<Integer, Double>(
             );
         }
     
+                @WorkerThread
         @Override
         public void onLongPostWork(List<Double> results) {
             // todo - perform any long running task on the result list
@@ -111,6 +113,7 @@ new BatchWorker<Integer, Double>(
             return "Post-Processing...";
         }
     
+                @UiThread
         @Override
         public void onShortPostWork(boolean completed) {
             // todo - perform any instantaneous task - eg. update/finalize ui

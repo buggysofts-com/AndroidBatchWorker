@@ -2,6 +2,7 @@ package com.buggysofts.android.batchworkerimpl;
 
 import android.os.Bundle;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
                     return "Pre-Processing...";
                 }
 
+                @WorkerThread
                 @Override
                 public Double performTask(List<Integer> dataList, int activeDataIndex) {
                     Integer activeData = dataList.get(activeDataIndex);
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     );
                 }
 
+                @WorkerThread
                 @Override
                 public void onLongPostWork(List<Double> results) {
                     // todo - perform any long running task on the result list
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     return "Post-Processing...";
                 }
 
+                @UiThread
                 @Override
                 public void onShortPostWork(boolean completed) {
                     // todo - perform any instantaneous task - eg. update/finalize ui
